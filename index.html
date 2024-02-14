@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-step form</title>
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app">
+        <div class="sideBar">
+
+            <div class="step">
+                <div class="circleStepCounter">1</div>
+                <div class="stepText">
+                    <div class="stepTitle">STEP 1</div>
+                    <div class="stepInfo">YOUR INFO</div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="circleStepCounter">2</div>
+                <div class="stepText">
+                    <div class="stepTitle">STEP 2</div>
+                    <div class="stepInfo">SELECT PLAN</div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="circleStepCounter">3</div>
+                <div class="stepText">
+                    <div class="stepTitle">STEP 3</div>
+                    <div class="stepInfo">ADD-ONS</div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="circleStepCounter">4</div>
+                <div class="stepText">
+                    <div class="stepTitle">STEP 4</div>
+                    <div class="stepInfo">SUMMARY</div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <main>
+            <h1 class="sectionTitle">Personal info</h1>
+            <p class="sectionInfo">Please provide your name, email address and phone number.</p>
+
+            <form>
+                <div class="inputSection">
+                    <label for="nameInput">Name</label>
+                    <input type="text" id="nameInput" class="inputText" placeholder="e.g. Stephen King">
+
+                    <label for="emailInput">Email Address</label>
+                    <input type="text" id="emailInput" class="inputText" placeholder="e.g. stephenking@lorem.com">
+
+                    <label for="phoneInput">Phone Number</label>
+                    <input type="text" id="phoneInput" class="inputText" placeholder="e.g. +1 234 567 890">
+                </div>
+            </form>
+
+            <div class="buttonsArea">
+                <button class="goBackButton">Go Back</button>
+                <button class="nextStepButton">Next Step</button>
+            </div>
+            
+        </main>
+    </div>
+
+
+
+
+
+    <script src="script.js"></script>
+</body>
+
+</html>
