@@ -51,19 +51,28 @@
 
         </div>
 
-        <main>
+        <div class="stepPage1 hidden">
             <h1 class="sectionTitle">Personal info</h1>
             <p class="sectionInfo">Please provide your name, email address and phone number.</p>
 
             <form>
                 <div class="inputSection">
-                    <label for="nameInput">Name</label>
+                    <div class="labelAndErrorText">
+                        <label for="nameInput">Name</label>
+                        <span class="errorText hidden">This field is required</span>
+                    </div>
                     <input type="text" id="nameInput" class="inputText" placeholder="e.g. Stephen King">
-
-                    <label for="emailInput">Email Address</label>
+                    
+                    <div class="labelAndErrorText">
+                        <label for="emailInput">Email Address</label>
+                        <span class="errorText hidden">This field is required</span>
+                    </div>
                     <input type="text" id="emailInput" class="inputText" placeholder="e.g. stephenking@lorem.com">
 
-                    <label for="phoneInput">Phone Number</label>
+                    <div class="labelAndErrorText">
+                        <label for="phoneInput">Phone Number</label>
+                        <span class="errorText hidden">This field is required</span>
+                    </div>
                     <input type="text" id="phoneInput" class="inputText" placeholder="e.g. +1 234 567 890">
                 </div>
             </form>
@@ -72,8 +81,90 @@
                 <button class="goBackButton">Go Back</button>
                 <button class="nextStepButton">Next Step</button>
             </div>
-            
-        </main>
+        </div>
+
+        <div class="stepPage2 hidden">
+            <h1 class="sectionTitle">Select your plan</h1>
+            <p class="sectionInfo">You have the option of monthly or yearly billing.</p>
+
+            <div class="items">
+
+                <div class="item">
+                    <img src="assets/images/icon-arcade.svg" alt="">
+                    <div class="itemTitle">Arcade</div>
+                    <div class="priceArcade">$9/mo</div>
+                    <div class="bonus hidden">2 months free</div>
+                </div>
+
+                <div class="item">
+                    <img src="assets/images/icon-advanced.svg" alt="">
+                    <div class="itemTitle">Advanced</div>
+                    <div class="priceAdvanced">$12/mo</div>
+                    <div class="bonus hidden">2 months free</div>
+                </div>
+
+                <div class="item">
+                    <img src="assets/images/icon-pro.svg" alt="">
+                    <div class="itemTitle">Pro</div>
+                    <div class="pricePro">$15/mo</div>
+                    <div class="bonus hidden">2 months free</div>
+                </div>
+
+            </div>
+
+            <div class="toggleSection">
+                <div class="toggleName toggleNameActivated" id="toggleNameMonthly">Monthly</div>
+                <label class="switch">
+                  <input type="checkbox" class="toggleSwitch">
+                  <span class="slider round"></span>
+                </label>
+                <div class="toggleName" id="toggleNameYearly">Yearly</div>
+            </div>
+
+            <div class="buttonsArea">
+                <button class="goBackButton">Go Back</button>
+                <button class="nextStepButton">Next Step</button>
+            </div>
+        </div>
+
+
+        <div class="stepPage3">
+            <h1 class="sectionTitle">Pick add-ons</h1>
+            <p class="sectionInfo">Add-ons help enhance your gaming experience.</p>
+
+            <div class="bars">
+
+                <div class="barItem">
+                    <input type="checkbox" class="checkbox">
+                    <div class="barText">
+                        <div class="barTitle">Online service</div>
+                        <div class="">Access to multiplayer games</div>
+                    </div>
+                </div>
+
+                <div class="barItem">
+                    <input type="checkbox" class="checkbox">
+                    <div class="barText">
+                        <div class="barTitle">Larger storage</div>
+                        <div class="">Access to multiplayer games</div>
+                    </div>
+                </div>
+
+                <div class="barItem">
+                    <input type="checkbox" class="checkbox">
+                    <div class="barText">
+                        <div class="barTitle">Customizable profile</div>
+                        <div class="">Access to multiplayer games</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="buttonsArea">
+                <button class="goBackButton">Go Back</button>
+                <button class="nextStepButton">Next Step</button>
+            </div>
+        </div>
+        
     </div>
 
 
