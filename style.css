@@ -36,6 +36,11 @@ body {
   padding-left: 20px;
   margin-bottom: 13px;
 }
+.selectedCircle {
+  background-color: hsl(206, 94%, 87%);
+  color: black;
+  border: none;
+}
 .circleStepCounter{
   border: 1px solid white;
   color: white;
