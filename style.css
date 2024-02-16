@@ -47,7 +47,7 @@ body {
   align-items: center;
   margin-right: 15px;
 }
-.stepPage1, .stepPage2, .stepPage3 {
+.stepPage1, .stepPage2, .stepPage3, .endScreen {
  padding-left: 70px;
  padding-top: 40px;
 }
@@ -260,6 +260,12 @@ input:checked + .slider:before {
   padding: 20px;
   width: 435px;
   margin-bottom: 15px;
+  cursor: pointer;
+}
+.barItem:hover{
+  border: 1px solid hsl(213, 96%, 18%);
+  background-color: hsl(231, 100%, 99%);
+
 }
 .barTitle{
   color: hsl(213, 96%, 18%);
@@ -267,8 +273,22 @@ input:checked + .slider:before {
   font-size: 16px;
   margin-bottom: 5px;
 }
+.barInfo{
+  font-size: 14px;
+  color: hsl(231, 11%, 63%);
+}
 .checkbox{
   margin-right: 25px;
   width: 19px;
   height: 19px;
+  cursor: pointer;
+}
+.barPrice{
+  margin-left: 120px;
+  font-size: 14px;
+  color: hsl(213, 96%, 18%);
+}
+.selectedItem {
+  border: 1px solid hsl(213, 96%, 18%);
+  background-color: hsl(231, 100%, 99%);
 }
