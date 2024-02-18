@@ -52,7 +52,7 @@ body {
   align-items: center;
   margin-right: 15px;
 }
-.stepPage1, .stepPage2, .stepPage3, .endScreen {
+.stepPage1, .stepPage2, .stepPage3, .stepPage4, .endScreen {
  padding-left: 70px;
  padding-top: 40px;
 }
@@ -296,4 +296,41 @@ input:checked + .slider:before {
 .selectedItem {
   border: 1px solid hsl(213, 96%, 18%);
   background-color: hsl(231, 100%, 99%);
+}
+.summaryBox{
+  margin-top: 30px;
+  padding: 20px;
+  background-color: hsl(217, 100%, 97%);
+  border-radius: 10px;
+}
+.selectedPlan{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.selectedPlanTitle, .selectedMainPrice {
+  color: hsl(213, 96%, 18%);
+  font-weight: 700;
+}
+.changeButton{
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 14px;
+  color: hsl(231, 11%, 63%);
+  font-weight: 500;
+}
+.selectedAddOn{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.selectedAddOnTitle {
+  color: hsl(231, 11%, 63%);
+  font-size: 14px;
+}
+.selectedAddOnPrice{
+  color: hsl(213, 96%, 18%);
+  font-size: 14px;
 }

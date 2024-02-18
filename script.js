@@ -1,5 +1,6 @@
 const inputTexts = document.querySelectorAll('.inputText');
-const nextStepButton = document.querySelector('.nextStepButton');
+const nextStepButtons = document.querySelectorAll('.nextStepButton');
+const goBackButtons = document.querySelectorAll('.goBackButton');
 const errorTexts = document.querySelectorAll('.errorText');
 let currentStep = 1;
 const items = document.querySelectorAll('.item'); //changed
@@ -15,30 +16,83 @@ const bonuses = document.querySelectorAll('.bonus');
 const stepPage1 = document.querySelector('.stepPage1');
 const stepPage2 = document.querySelector('.stepPage2');
 const stepPage3 = document.querySelector('.stepPage3');
+const stepPage4 = document.querySelector('.stepPage4');
 
-nextStepButton.addEventListener('click', () => {
-    currentStep = checkPage();
-    if(currentStep === 1) {
-        stepPage1.classList.remove('hidden');
-        stepPage2.classList.add('hidden');
-        stepPage3.classList.add('hidden');
-        checkInputFields();
-        console.log(currentStep);
-    }
-    if(currentStep === 2) {
-        currentStep++;
-        stepPage1.classList.add('hidden');
-        stepPage2.classList.remove('hidden');
-        stepPage3.classList.add('hidden');
-        console.log(currentStep);
-    }
-    if(currentStep === 3) {
-        stepPage1.classList.add('hidden');
-        stepPage2.classList.add('hidden');
-        stepPage3.classList.remove('hidden');
-        
-    }
-});
+const selectedPlanTitle = document.querySelector('.selectedPlanTitle');
+const selectedMainPrice = document.querySelector('.selectedMainPrice');
+
+nextStepButtons.forEach(nextStepButton => {
+    nextStepButton.addEventListener('click', () => {
+        if(currentStep === 1) {
+            step1();
+        }
+        else if(currentStep === 2) {
+            currentStep++;
+            step2();
+        }
+        else if(currentStep === 3) {
+            currentStep++;
+            step3();
+        }
+        else if(currentStep === 4) {
+            step4();
+        }
+    });
+})
+
+goBackButtons.forEach(goBackButton => {
+    goBackButton.addEventListener('click', () => {
+        if(currentStep === 4) {
+            currentStep--;
+            step3();
+        }
+        else if(currentStep === 3) {
+            currentStep--;
+            step2();
+        }
+        else if(currentStep === 2) {
+            currentStep--;
+            step1();
+        }
+        else if(currentStep === 1) {
+            currentStep--;
+            step4();
+        }
+    })
+})
+
+function step1() {
+    checkInputFields();             
+    console.log(currentStep);
+    stepPage1.classList.remove('hidden');
+    stepPage2.classList.add('hidden');
+    stepPage3.classList.add('hidden');
+    stepPage4.classList.add('hidden');
+}
+
+function step2() {
+    console.log(currentStep);
+    stepPage1.classList.add('hidden');
+    stepPage2.classList.remove('hidden');
+    stepPage3.classList.add('hidden');
+    stepPage4.classList.add('hidden');
+}
+
+function step3() {
+    console.log(currentStep);
+    stepPage1.classList.add('hidden');
+    stepPage2.classList.add('hidden');
+    stepPage3.classList.remove('hidden');
+    stepPage4.classList.add('hidden');
+}
+
+function step4() {
+    console.log(currentStep);
+    stepPage1.classList.add('hidden');
+    stepPage2.classList.add('hidden');
+    stepPage3.classList.add('hidden');
+    stepPage4.classList.remove('hidden');
+}
 
 
 function checkPage() {
@@ -104,11 +158,20 @@ items.forEach(item => {
 
         // Zaznacz/Wyłącz aktualny element
         item.classList.toggle('selectedItem');
+
+
+        //pokazuje wybrany tytul i cene z items 
+        if (item.classList.contains('selectedItem')) {
+            const itemTitle = item.querySelector('.itemTitle');
+            const itemPrice = item.querySelector('.itemPrice');
+            selectedPlanTitle.textContent = itemTitle.textContent;
+            selectedMainPrice.textContent = itemPrice.textContent;
+        } 
     });
-});
 
     
 
+});
 
     //step 3
     const barItems = document.querySelectorAll('.barItem');
@@ -123,3 +186,10 @@ items.forEach(item => {
 });
 
 
+
+
+
+
+function summary() {
+    
+}
