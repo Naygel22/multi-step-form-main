@@ -17,9 +17,13 @@ const stepPage1 = document.querySelector('.stepPage1');
 const stepPage2 = document.querySelector('.stepPage2');
 const stepPage3 = document.querySelector('.stepPage3');
 const stepPage4 = document.querySelector('.stepPage4');
+const endScreen = document.querySelector('.endScreen');
 
 const selectedPlanTitle = document.querySelector('.selectedPlanTitle');
 const selectedMainPrice = document.querySelector('.selectedMainPrice');
+
+const selectedAddOnTitle = document.querySelector('.selectedAddOnTitle');
+const selectedAddOnPrice = document.querySelector('.selectedAddOnPrice');
 
 nextStepButtons.forEach(nextStepButton => {
     nextStepButton.addEventListener('click', () => {
@@ -64,8 +68,8 @@ goBackButtons.forEach(goBackButton => {
 function step1() {
     checkInputFields();             
     console.log(currentStep);
-    stepPage1.classList.remove('hidden');
-    stepPage2.classList.add('hidden');
+    stepPage1.classList.add('hidden');
+    stepPage2.classList.remove('hidden');
     stepPage3.classList.add('hidden');
     stepPage4.classList.add('hidden');
 }
@@ -73,8 +77,8 @@ function step1() {
 function step2() {
     console.log(currentStep);
     stepPage1.classList.add('hidden');
-    stepPage2.classList.remove('hidden');
-    stepPage3.classList.add('hidden');
+    stepPage2.classList.add('hidden');
+    stepPage3.classList.remove('hidden');
     stepPage4.classList.add('hidden');
 }
 
@@ -82,8 +86,8 @@ function step3() {
     console.log(currentStep);
     stepPage1.classList.add('hidden');
     stepPage2.classList.add('hidden');
-    stepPage3.classList.remove('hidden');
-    stepPage4.classList.add('hidden');
+    stepPage3.classList.add('hidden');
+    stepPage4.classList.remove('hidden');
 }
 
 function step4() {
@@ -91,7 +95,8 @@ function step4() {
     stepPage1.classList.add('hidden');
     stepPage2.classList.add('hidden');
     stepPage3.classList.add('hidden');
-    stepPage4.classList.remove('hidden');
+    stepPage4.classList.add('hidden');
+    endScreen.classList.remove('hidden');
 }
 
 
@@ -182,12 +187,32 @@ items.forEach(item => {
     barItem.addEventListener('click', () => {
         barItem.classList.toggle('selectedItem');
         checkbox.checked = !checkbox.checked;
+
+        if(barItem.classList.contains('selectedItem')) {
+            const selectedAddOn = document.createElement('div');
+            selectedAddOn.classList.add('selectedAddOn');
+
+            const selectedAddOnTitle = document.createElement('div');
+            selectedAddOnTitle.classList.add('selectedAddOnTitle');
+            selectedAddOnTitle.textContent = barItem.querySelector('.barTitle').textContent;
+            selectedAddOn.appendChild(selectedAddOnTitle);
+
+            const selectedAddOnPrice = document.createElement('div');
+            selectedAddOnPrice.classList.add('selectedAddOnPrice');
+            selectedAddOnPrice.textContent = barItem.querySelector('.barPrice').textContent;
+            selectedAddOn.appendChild(selectedAddOnPrice);
+
+            summaryBox.appendChild(selectedAddOn);
+
+            // selectedAddOnTitle.textContent = title.textContent;
+            // selectedAddOnPrice.textContent = price.textContent;
+        }
     });
+
+    
 });
 
-
-
-
+const summaryBox = document.querySelector('.summaryBox');
 
 
 function summary() {

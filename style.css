@@ -56,7 +56,13 @@ body {
  padding-left: 70px;
  padding-top: 40px;
 }
-
+.endScreen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40px;
+}
 .stepTitle{
   font-size: 12.5px;
   margin-bottom: 3px;
@@ -74,6 +80,14 @@ body {
 }
 .sectionInfo {
   color: hsl(231, 11%, 63%);
+}
+.sectionInfoEndScreen {
+  max-width: 440px;
+  word-wrap: break-word;
+  text-align: center;
+  font-size: 15px;
+  line-height: 20px;
+  margin-top: 10px;
 }
 .inputSection{
   display: flex;
@@ -320,11 +334,13 @@ input:checked + .slider:before {
   font-size: 14px;
   color: hsl(231, 11%, 63%);
   font-weight: 500;
+  margin-bottom: 20px;
 }
 .selectedAddOn{
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 20px;
 }
 .selectedAddOnTitle {
   color: hsl(231, 11%, 63%);
@@ -333,4 +349,7 @@ input:checked + .slider:before {
 .selectedAddOnPrice{
   color: hsl(213, 96%, 18%);
   font-size: 14px;
+}
+.icon-thank-you {
+  margin-bottom: 30px;
 }
