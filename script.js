@@ -25,56 +25,122 @@ const selectedMainPrice = document.querySelector('.selectedMainPrice');
 const selectedAddOnTitle = document.querySelector('.selectedAddOnTitle');
 const selectedAddOnPrice = document.querySelector('.selectedAddOnPrice');
 
+
+const avaiablePlans = [
+    {
+        id: "Arcade",
+        title: "Arcade", 
+        icon: "assets/images/icon-arcade.svg", 
+        price: {
+            monthly: 9,
+            yearly: 90
+        }
+    },
+    {
+        id: 'Advanced',
+        title: "Advanced", 
+        icon: "assets/images/icon-advanced.svg", 
+        price: {
+            monthly:12,
+            yearly: 120
+        }
+    },
+    {
+        id: "Pro",
+        title: "Pro", 
+        icon: "assets/images/icon-pro.svg", 
+        price: {
+            monthly:15,
+            yearly: 950
+        }
+    },
+]
+
+const avaiableAddons = [
+    {
+        id: "Online Service",
+        title:"Online Service",
+        description: "",
+        price: {
+            monthly:1,
+            yearly: 10
+        }
+    },
+]
+
+const state = {
+    name: '',
+    email: '',
+    phone: '',
+    selectedPlanId:"",
+    selectedPlanVersion: "",
+    addons: []
+}
+
+function getSelectedPlanInfo() {
+    const userSelectedPlan = state.selectedPlanId
+    const userSelectedPlanVersion = state.selectedPlanVersion
+
+    const plan = avaiablePlans.find(item => item.id === userSelectedPlan);
+}
+
+
 nextStepButtons.forEach(nextStepButton => {
     nextStepButton.addEventListener('click', () => {
-        if(currentStep === 1) {
-            step1();
+        if (currentStep === 1) {
+            const isStep1Valid = checkInputFields();
+            if (isStep1Valid) {
+                currentStep++;
+                goToStep2();
+            }
         }
-        else if(currentStep === 2) {
+        else if (currentStep === 2) {
             currentStep++;
-            step2();
+            goToStep3();
         }
-        else if(currentStep === 3) {
+        else if (currentStep === 3) {
             currentStep++;
-            step3();
+            goToStep4();
         }
-        else if(currentStep === 4) {
-            step4();
+        else if (currentStep === 4) {
+            goToEndScreen();
         }
     });
 })
 
 goBackButtons.forEach(goBackButton => {
     goBackButton.addEventListener('click', () => {
-        if(currentStep === 4) {
+        if (currentStep === 4) {
             currentStep--;
-            step3();
+            goToStep3();
         }
-        else if(currentStep === 3) {
+        else if (currentStep === 3) {
             currentStep--;
-            step2();
+            goToStep2();
         }
-        else if(currentStep === 2) {
+        else if (currentStep === 2) {
             currentStep--;
-            step1();
-        }
-        else if(currentStep === 1) {
-            currentStep--;
-            step4();
+            goToStep1();
         }
     })
 })
 
-function step1() {
-    checkInputFields();             
+function goToStep1() {
     console.log(currentStep);
+    stepPage1.classList.remove('hidden');
+    stepPage2.classList.add('hidden');
+    stepPage3.classList.add('hidden');
+    stepPage4.classList.add('hidden');
+}
+
+function goToStep2() {
     stepPage1.classList.add('hidden');
     stepPage2.classList.remove('hidden');
     stepPage3.classList.add('hidden');
     stepPage4.classList.add('hidden');
 }
 
-function step2() {
+function goToStep3() {
     console.log(currentStep);
     stepPage1.classList.add('hidden');
     stepPage2.classList.add('hidden');
@@ -82,7 +148,7 @@ function step2() {
     stepPage4.classList.add('hidden');
 }
 
-function step3() {
+function goToStep4() {
     console.log(currentStep);
     stepPage1.classList.add('hidden');
     stepPage2.classList.add('hidden');
@@ -90,7 +156,7 @@ function step3() {
     stepPage4.classList.remove('hidden');
 }
 
-function step4() {
+function goToEndScreen() {
     console.log(currentStep);
     stepPage1.classList.add('hidden');
     stepPage2.classList.add('hidden');
@@ -100,17 +166,17 @@ function step4() {
 }
 
 
-function checkPage() {
-    if (!stepPage1.classList.contains('hidden')) {
-        return 1;
-    }
-    if (!stepPage2.classList.contains('hidden')) {
-        return 2;
-    }
-    if (!stepPage3.classList.contains('hidden')) {
-        return 3;
-    }
-}
+// function checkPage() {
+//     if (!stepPage1.classList.contains('hidden')) {
+//         return 1;
+//     }
+//     if (!stepPage2.classList.contains('hidden')) {
+//         return 2;
+//     }
+//     if (!stepPage3.classList.contains('hidden')) {
+//         return 3;
+//     }
+// }
 
 function checkInputFields() {
     let bracketsAreFilled = true;
@@ -127,33 +193,38 @@ function checkInputFields() {
             errorText.classList.add('hidden');
         }
     });
-    if(bracketsAreFilled) {
-        currentStep++;
-        console.log(currentStep)
-    }
-}
-    toggleSwitch.addEventListener('change', () => {
-        if (toggleSwitch.checked) {
-            toggleNameMonthly.classList.remove("toggleNameActivated");
-            toggleNameYearly.classList.add("toggleNameActivated");
-            priceArcade.textContent = '$90/yr';
-            priceAdvanced.textContent = '$120/yr';
-            pricePro.textContent = '$150/yr';
-            bonuses.forEach(bonus => bonus.classList.remove('hidden'));
-            
-        } else {
-            toggleNameMonthly.classList.add("toggleNameActivated");
-            toggleNameYearly.classList.remove("toggleNameActivated");
-            priceArcade.textContent = '$9/mo';
-            priceAdvanced.textContent = '$12/mo';
-            pricePro.textContent = '$15/mo';
-            bonuses.forEach(bonus => bonus.classList.add('hidden'));
-        }
-    });
 
-   // step 2
+    return bracketsAreFilled;
+}
+toggleSwitch.addEventListener('change', () => {
+    if (toggleSwitch.checked) {
+        toggleNameMonthly.classList.remove("toggleNameActivated");
+        toggleNameYearly.classList.add("toggleNameActivated");
+        priceArcade.textContent = '$90/yr';
+        priceAdvanced.textContent = '$120/yr';
+        pricePro.textContent = '$150/yr';
+        bonuses.forEach(bonus => bonus.classList.remove('hidden'));
+
+    } else {
+        toggleNameMonthly.classList.add("toggleNameActivated");
+        toggleNameYearly.classList.remove("toggleNameActivated");
+        priceArcade.textContent = '$9/mo';
+        priceAdvanced.textContent = '$12/mo';
+        pricePro.textContent = '$15/mo';
+        bonuses.forEach(bonus => bonus.classList.add('hidden'));
+    }
+});
+
+
+
+// step 2
 items.forEach(item => {
     item.addEventListener('click', () => {
+
+        console.log(item)
+        const clickedItemId = item.id
+        state.selectedPlanId = clickedItemId
+
         // Odznacz pozostałe elementy
         items.forEach(otherItem => {
             if (otherItem !== item) {
@@ -171,24 +242,26 @@ items.forEach(item => {
             const itemPrice = item.querySelector('.itemPrice');
             selectedPlanTitle.textContent = itemTitle.textContent;
             selectedMainPrice.textContent = itemPrice.textContent;
-        } 
+        } else {
+            state.selectedPlanId = "";
+        }
     });
 
-    
+
 
 });
 
-    //step 3
-    const barItems = document.querySelectorAll('.barItem');
+//step 3
+const barItems = document.querySelectorAll('.barItem');
 
-    barItems.forEach(barItem => {
+barItems.forEach(barItem => {
     const checkbox = barItem.querySelector('.checkbox');
 
     barItem.addEventListener('click', () => {
         barItem.classList.toggle('selectedItem');
         checkbox.checked = !checkbox.checked;
 
-        if(barItem.classList.contains('selectedItem')) {
+        if (barItem.classList.contains('selectedItem')) {
             const selectedAddOn = document.createElement('div');
             selectedAddOn.classList.add('selectedAddOn');
 
@@ -209,12 +282,12 @@ items.forEach(item => {
         }
     });
 
-    
+
 });
 
 const summaryBox = document.querySelector('.summaryBox');
 
 
 function summary() {
-    
+
 }
