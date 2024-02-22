@@ -4,6 +4,7 @@ const goBackButtons = document.querySelectorAll('.goBackButton');
 const errorTexts = document.querySelectorAll('.errorText');
 let currentStep = 1;
 const items = document.querySelectorAll('.item'); //changed
+const itemsPlans = document.querySelector('.items');
 const toggleSwitch = document.querySelector('.toggleSwitch');
 const toggleNameMonthly = document.querySelector('#toggleNameMonthly');
 const toggleNameYearly = document.querySelector('#toggleNameYearly');
@@ -60,10 +61,28 @@ const avaiableAddons = [
     {
         id: "Online Service",
         title:"Online Service",
-        description: "",
+        description: "Access to multiplayer games",
         price: {
             monthly:1,
             yearly: 10
+        }
+    },
+    {
+        id: "Larger storage",
+        title:"Larger storage",
+        description: "Extra 1TB of cloud space",
+        price: {
+            monthly:2,
+            yearly: 20
+        }
+    },
+    {
+        id: "Customizable profile",
+        title:"Customizable profile",
+        description: "Custom theme on your profile",
+        price: {
+            monthly:2,
+            yearly: 20
         }
     },
 ]
@@ -76,6 +95,86 @@ const state = {
     selectedPlanVersion: "",
     addons: []
 }
+
+function createPlans() {
+    // const sectionTitle = document.createElement('h1');
+    // sectionTitle.classList.add('sectionTitle');
+    // sectionTitle.textContent = "Select your plan";
+    // stepPage2.appendChild(sectionTitle);
+
+    // const sectionInfo = document.createElement('p');
+    // sectionInfo.classList.add('sectionInfo');
+    // sectionInfo.textContent = "You have the option of monthly or yearly billing.";
+    // stepPage2.appendChild(sectionInfo);
+
+    avaiablePlans.forEach(plan => {
+        const item = document.createElement('div');
+        item.classList.add('item');
+        itemsPlans.appendChild(item);
+
+        const img = document.createElement('img');
+        img.src = plan.icon;
+        item.appendChild(img);
+
+        const itemTitle = document.createElement('div');
+        itemTitle.classList.add('itemTitle');
+        itemTitle.textContent = plan.title;
+        item.appendChild(itemTitle);
+
+        const itemPrice = document.createElement('div');
+        itemPrice.classList.add('itemPrice');
+        itemPrice.textContent = `$${plan.price.monthly}/mo`;
+        item.appendChild(itemPrice);
+
+        if (toggleSwitch.checked) {
+            const bonus = document.createElement('div');
+            bonus.classList.add('bonus');
+            bonus.textContent = '2 months free';
+            item.appendChild(bonus);
+        }
+        
+    })
+}
+
+createPlans();
+
+const bars = document.querySelector('.bars');
+
+function createAddons() {
+    avaiableAddons.forEach(addon => {
+        const barItem = document.createElement('div');
+        barItem.classList.add('barItem');
+        bars.appendChild(barItem);
+
+        const checkbox = document.createElement('input');
+        checkbox.setAttribute("type", "checkbox");
+        checkbox.classList.add('checkbox');
+        barItem.appendChild(checkbox);
+
+        const barText = document.createElement('div');
+        barText.classList.add('barText');
+        barItem.appendChild(barText);
+
+        const barTitle = document.createElement('div');
+        barTitle.classList.add('barTitle');
+        barTitle.textContent = addon.title;
+        barText.appendChild(barTitle);
+
+        const barInfo = document.createElement('div');
+        barInfo.classList.add('barInfo');
+        barInfo.textContent = addon.description;
+        barText.appendChild(barInfo);
+
+        const barPrice = document.createElement('div');
+        barPrice.classList.add('barPrice');
+        barPrice.textContent = `$${addon.price.monthly}/mo`;
+        barItem.appendChild(barPrice);
+    });
+}
+
+createAddons();
+
+
 
 function getSelectedPlanInfo() {
     const userSelectedPlan = state.selectedPlanId
@@ -134,10 +233,12 @@ function goToStep1() {
 }
 
 function goToStep2() {
+    
     stepPage1.classList.add('hidden');
     stepPage2.classList.remove('hidden');
     stepPage3.classList.add('hidden');
     stepPage4.classList.add('hidden');
+    
 }
 
 function goToStep3() {
