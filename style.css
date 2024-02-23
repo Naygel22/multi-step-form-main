@@ -303,7 +303,7 @@ input:checked + .slider:before {
   cursor: pointer;
 }
 .barPrice{
-  margin-left: 120px;
+  margin-left: auto;
   font-size: 14px;
   color: hsl(213, 96%, 18%);
 }
@@ -352,4 +352,7 @@ input:checked + .slider:before {
 }
 .icon-thank-you {
   margin-bottom: 30px;
+}
+#buttonNextStep1{
+  margin-left: auto;
 }

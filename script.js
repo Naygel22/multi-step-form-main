@@ -3,16 +3,16 @@ const nextStepButtons = document.querySelectorAll('.nextStepButton');
 const goBackButtons = document.querySelectorAll('.goBackButton');
 const errorTexts = document.querySelectorAll('.errorText');
 let currentStep = 1;
-const items = document.querySelectorAll('.item'); //changed
+
 const itemsPlans = document.querySelector('.items');
 const toggleSwitch = document.querySelector('.toggleSwitch');
 const toggleNameMonthly = document.querySelector('#toggleNameMonthly');
 const toggleNameYearly = document.querySelector('#toggleNameYearly');
 
-const priceArcade = document.querySelector('.priceArcade');
-const priceAdvanced = document.querySelector('.priceAdvanced');
-const pricePro = document.querySelector('.pricePro');
-const bonuses = document.querySelectorAll('.bonus');
+// const priceArcade = document.querySelector('.priceArcade');
+// const priceAdvanced = document.querySelector('.priceAdvanced');
+// const pricePro = document.querySelector('.pricePro');
+
 
 const stepPage1 = document.querySelector('.stepPage1');
 const stepPage2 = document.querySelector('.stepPage2');
@@ -25,6 +25,10 @@ const selectedMainPrice = document.querySelector('.selectedMainPrice');
 
 const selectedAddOnTitle = document.querySelector('.selectedAddOnTitle');
 const selectedAddOnPrice = document.querySelector('.selectedAddOnPrice');
+
+const nameInput = document.querySelector('#nameInput');
+const emailInput = document.querySelector('#emailInput');
+const phoneInput = document.querySelector('#phoneInput');
 
 
 const avaiablePlans = [
@@ -52,7 +56,7 @@ const avaiablePlans = [
         icon: "assets/images/icon-pro.svg", 
         price: {
             monthly:15,
-            yearly: 950
+            yearly: 150
         }
     },
 ]
@@ -96,6 +100,22 @@ const state = {
     addons: []
 }
 
+nameInput.addEventListener('input', ()=>{
+    const typedName = nameInput.value;
+    state.name = typedName;
+});
+
+emailInput.addEventListener('input', ()=>{
+    const typedEmail = emailInput.value;
+    state.email = typedEmail;
+});
+
+phoneInput.addEventListener('input', ()=>{
+    const typedPhone = phoneInput.value;
+    state.phone = typedPhone;
+});
+
+
 function createPlans() {
     // const sectionTitle = document.createElement('h1');
     // sectionTitle.classList.add('sectionTitle');
@@ -126,14 +146,70 @@ function createPlans() {
         itemPrice.textContent = `$${plan.price.monthly}/mo`;
         item.appendChild(itemPrice);
 
-        if (toggleSwitch.checked) {
+        
             const bonus = document.createElement('div');
             bonus.classList.add('bonus');
+            bonus.classList.add('hidden');
             bonus.textContent = '2 months free';
             item.appendChild(bonus);
-        }
         
+
+
+        item.addEventListener('click', () => {
+
+            console.log(item)
+            const clickedItemId = plan.id;
+            state.selectedPlanId = clickedItemId
+            console.log(state);
+            const items = document.querySelectorAll('.item');
+            // Odznacz pozostałe elementy
+            items.forEach(otherItem => {
+                if (otherItem !== item) {
+                    otherItem.classList.remove('selectedItem');
+                }
+            });
+    
+            // Zaznacz/Wyłącz aktualny element
+            item.classList.toggle('selectedItem');
+    
+    
+            //pokazuje wybrany tytul i cene z items 
+            if (item.classList.contains('selectedItem')) {
+                const itemTitle = item.querySelector('.itemTitle');
+                const itemPrice = item.querySelector('.itemPrice');
+                selectedPlanTitle.textContent = itemTitle.textContent;
+                selectedMainPrice.textContent = itemPrice.textContent;
+            } else {
+                state.selectedPlanId = "";
+            }
+            console.log(state);
+        });
+
+
+        const bonuses = document.querySelectorAll('.bonus');
+        toggleSwitch.addEventListener('change', () => {
+                
+            if (toggleSwitch.checked) {
+                
+                toggleNameMonthly.classList.remove("toggleNameActivated");
+                toggleNameYearly.classList.add("toggleNameActivated");
+                itemPrice.textContent = `$${plan.price.yearly}/yr`;
+                bonuses.forEach(bonus => bonus.classList.remove('hidden'));
+                if (item.classList.contains('selectedItem')) {
+                    const itemPrice = item.querySelector('.itemPrice');
+                    selectedMainPrice.textContent = itemPrice.textContent;
+                }
+            } else {
+                toggleNameMonthly.classList.add("toggleNameActivated");
+                toggleNameYearly.classList.remove("toggleNameActivated");
+                itemPrice.textContent = `$${plan.price.monthly}/mo`;
+                bonuses.forEach(bonus => bonus.classList.add('hidden'));
+                selectedMainPrice.textContent = itemPrice.textContent;
+                
+            }
+        });
     })
+    
 }
 
 createPlans();
@@ -177,8 +253,11 @@ createAddons();
 
 
 function getSelectedPlanInfo() {
-    const userSelectedPlan = state.selectedPlanId
-    const userSelectedPlanVersion = state.selectedPlanVersion
+    const userSelectedName = state.name;
+    const userSelectedEmail = state.email;
+    const userSelectedPhone = state.phone;
+    const userSelectedPlan = state.selectedPlanId;
+    const userSelectedPlanVersion = state.selectedPlanVersion;
 
     const plan = avaiablePlans.find(item => item.id === userSelectedPlan);
 }
@@ -297,60 +376,43 @@ function checkInputFields() {
 
     return bracketsAreFilled;
 }
-toggleSwitch.addEventListener('change', () => {
-    if (toggleSwitch.checked) {
-        toggleNameMonthly.classList.remove("toggleNameActivated");
-        toggleNameYearly.classList.add("toggleNameActivated");
-        priceArcade.textContent = '$90/yr';
-        priceAdvanced.textContent = '$120/yr';
-        pricePro.textContent = '$150/yr';
-        bonuses.forEach(bonus => bonus.classList.remove('hidden'));
 
-    } else {
-        toggleNameMonthly.classList.add("toggleNameActivated");
-        toggleNameYearly.classList.remove("toggleNameActivated");
-        priceArcade.textContent = '$9/mo';
-        priceAdvanced.textContent = '$12/mo';
-        pricePro.textContent = '$15/mo';
-        bonuses.forEach(bonus => bonus.classList.add('hidden'));
-    }
-});
 
 
 
 // step 2
-items.forEach(item => {
-    item.addEventListener('click', () => {
+// items.forEach(item => {
+//     item.addEventListener('click', () => {
 
-        console.log(item)
-        const clickedItemId = item.id
-        state.selectedPlanId = clickedItemId
+//         console.log(item)
+//         const clickedItemId = item.id
+//         state.selectedPlanId = clickedItemId
 
-        // Odznacz pozostałe elementy
-        items.forEach(otherItem => {
-            if (otherItem !== item) {
-                otherItem.classList.remove('selectedItem');
-            }
-        });
+//         // Odznacz pozostałe elementy
+//         items.forEach(otherItem => {
+//             if (otherItem !== item) {
+//                 otherItem.classList.remove('selectedItem');
+//             }
+//         });
 
-        // Zaznacz/Wyłącz aktualny element
-        item.classList.toggle('selectedItem');
-
-
-        //pokazuje wybrany tytul i cene z items 
-        if (item.classList.contains('selectedItem')) {
-            const itemTitle = item.querySelector('.itemTitle');
-            const itemPrice = item.querySelector('.itemPrice');
-            selectedPlanTitle.textContent = itemTitle.textContent;
-            selectedMainPrice.textContent = itemPrice.textContent;
-        } else {
-            state.selectedPlanId = "";
-        }
-    });
+//         // Zaznacz/Wyłącz aktualny element
+//         item.classList.toggle('selectedItem');
 
 
+//         //pokazuje wybrany tytul i cene z items 
+//         if (item.classList.contains('selectedItem')) {
+//             const itemTitle = item.querySelector('.itemTitle');
+//             const itemPrice = item.querySelector('.itemPrice');
+//             selectedPlanTitle.textContent = itemTitle.textContent;
+//             selectedMainPrice.textContent = itemPrice.textContent;
+//         } else {
+//             state.selectedPlanId = "";
+//         }
+//     });
 
-});
+
+
+// });
 
 //step 3
 const barItems = document.querySelectorAll('.barItem');
