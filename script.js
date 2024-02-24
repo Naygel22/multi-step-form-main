@@ -156,7 +156,7 @@ function createPlans() {
 
 
         item.addEventListener('click', () => {
-
+            console.log(state);
             console.log(item)
             const clickedItemId = plan.id;
             state.selectedPlanId = clickedItemId
@@ -187,6 +187,7 @@ function createPlans() {
 
 
         const bonuses = document.querySelectorAll('.bonus');
+        state.selectedPlanVersion = toggleNameMonthly.textContent;
         toggleSwitch.addEventListener('change', () => {
                 
             if (toggleSwitch.checked) {
@@ -195,7 +196,8 @@ function createPlans() {
                 toggleNameYearly.classList.add("toggleNameActivated");
                 itemPrice.textContent = `$${plan.price.yearly}/yr`;
                 bonuses.forEach(bonus => bonus.classList.remove('hidden'));
-                if (item.classList.contains('selectedItem')) {
+                state.selectedPlanVersion = toggleNameYearly.textContent;
+                if (state.selectedPlanVersion === toggleNameYearly.textContent) {
                     const itemPrice = item.querySelector('.itemPrice');
                     selectedMainPrice.textContent = itemPrice.textContent;
                 }
@@ -204,9 +206,13 @@ function createPlans() {
                 toggleNameYearly.classList.remove("toggleNameActivated");
                 itemPrice.textContent = `$${plan.price.monthly}/mo`;
                 bonuses.forEach(bonus => bonus.classList.add('hidden'));
-                selectedMainPrice.textContent = itemPrice.textContent;
-                
-            }
+                state.selectedPlanVersion = toggleNameMonthly.textContent;
+
+                if (state.selectedPlanVersion === toggleNameMonthly.textContent) {
+                    const itemPrice = item.querySelector('.itemPrice');
+                    selectedMainPrice.textContent = itemPrice.textContent;
+                }
+            }  console.log(state);
         });
     })
     
@@ -414,8 +420,9 @@ function checkInputFields() {
 
 // });
 
-//step 3
+//step 4
 const barItems = document.querySelectorAll('.barItem');
+const summaryBox = document.querySelector('.summaryBox');
 
 barItems.forEach(barItem => {
     const checkbox = barItem.querySelector('.checkbox');
@@ -440,17 +447,29 @@ barItems.forEach(barItem => {
 
             summaryBox.appendChild(selectedAddOn);
 
-            // selectedAddOnTitle.textContent = title.textContent;
-            // selectedAddOnPrice.textContent = price.textContent;
+            const totalSumBar = document.querySelector('.totalSumBar');
+            const totalText = document.createElement('div');
+            totalText.classList.add('totalText');
+            totalText.textContent = 'Total';
+            totalSumBar.appendChild(totalText);
+        } else { // nie wiem czy to dobrze
+            const selectedAddOn = document.querySelector('.selectedAddOn');
+            selectedAddOn.remove();
         }
     });
 
 
 });
 
-const summaryBox = document.querySelector('.summaryBox');
+const totalPrice = document.querySelector('.totalPrice');
 
 
 function summary() {
 
 }
+
+const changeButton = document.querySelector('.changeButton');
+changeButton.addEventListener('click', ()=> {
+    goToStep2();
+    currentStep = 2;
+})
