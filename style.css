@@ -366,3 +366,9 @@ input:checked + .slider:before {
   font-size: 18px;
   color: hsl(243, 100%, 62%);
 }
+.selectedCircle{
+  background-color: hsl(206, 94%, 87%);
+  color: black;
+  border: none;
+  font-weight: 700;
+}

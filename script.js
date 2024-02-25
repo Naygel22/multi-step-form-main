@@ -30,6 +30,7 @@ const nameInput = document.querySelector('#nameInput');
 const emailInput = document.querySelector('#emailInput');
 const phoneInput = document.querySelector('#phoneInput');
 
+const circles = document.querySelectorAll('.circleStepCounter');
 
 const avaiablePlans = [
     {
@@ -251,6 +252,14 @@ function createAddons() {
         barPrice.classList.add('barPrice');
         barPrice.textContent = `$${addon.price.monthly}/mo`;
         barItem.appendChild(barPrice);
+
+        toggleSwitch.addEventListener('change', ()=>{
+            if (toggleSwitch.checked) {
+                barPrice.textContent = `$${addon.price.yearly}/yr`;
+            } else {
+                barPrice.textContent = `$${addon.price.monthly}/mo`;
+            }
+        })
     });
 }
 
@@ -315,6 +324,7 @@ function goToStep1() {
     stepPage2.classList.add('hidden');
     stepPage3.classList.add('hidden');
     stepPage4.classList.add('hidden');
+    updateCirclesBySteps();
 }
 
 function goToStep2() {
@@ -323,7 +333,7 @@ function goToStep2() {
     stepPage2.classList.remove('hidden');
     stepPage3.classList.add('hidden');
     stepPage4.classList.add('hidden');
-    
+    updateCirclesBySteps();
 }
 
 function goToStep3() {
@@ -332,6 +342,7 @@ function goToStep3() {
     stepPage2.classList.add('hidden');
     stepPage3.classList.remove('hidden');
     stepPage4.classList.add('hidden');
+    updateCirclesBySteps();
 }
 
 function goToStep4() {
@@ -340,6 +351,7 @@ function goToStep4() {
     stepPage2.classList.add('hidden');
     stepPage3.classList.add('hidden');
     stepPage4.classList.remove('hidden');
+    updateCirclesBySteps();
 }
 
 function goToEndScreen() {
@@ -419,7 +431,7 @@ function checkInputFields() {
 
 
 // });
-
+const priceArray = [];
 //step 4
 const barItems = document.querySelectorAll('.barItem');
 const summaryBox = document.querySelector('.summaryBox');
@@ -447,11 +459,9 @@ barItems.forEach(barItem => {
 
             summaryBox.appendChild(selectedAddOn);
 
-            const totalSumBar = document.querySelector('.totalSumBar');
-            const totalText = document.createElement('div');
-            totalText.classList.add('totalText');
-            totalText.textContent = 'Total';
-            totalSumBar.appendChild(totalText);
+            priceArray.push(selectedAddOnPrice.textContent);
+            console.log(priceArray);
+           
         } else { // nie wiem czy to dobrze
             const selectedAddOn = document.querySelector('.selectedAddOn');
             selectedAddOn.remove();
@@ -473,3 +483,16 @@ changeButton.addEventListener('click', ()=> {
     goToStep2();
     currentStep = 2;
 })
+
+
+function updateCirclesBySteps() {
+    circles.forEach((circle, index) => {
+        if (index + 1 === currentStep) {
+            circle.classList.add('selectedCircle');
+        } else {
+            circle.classList.remove('selectedCircle');
+        }
+    });
+}
+
+updateCirclesBySteps();
