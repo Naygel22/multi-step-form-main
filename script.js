@@ -9,11 +9,6 @@ const toggleSwitch = document.querySelector('.toggleSwitch');
 const toggleNameMonthly = document.querySelector('#toggleNameMonthly');
 const toggleNameYearly = document.querySelector('#toggleNameYearly');
 
-// const priceArcade = document.querySelector('.priceArcade');
-// const priceAdvanced = document.querySelector('.priceAdvanced');
-// const pricePro = document.querySelector('.pricePro');
-
-
 const stepPage1 = document.querySelector('.stepPage1');
 const stepPage2 = document.querySelector('.stepPage2');
 const stepPage3 = document.querySelector('.stepPage3');
@@ -32,11 +27,14 @@ const phoneInput = document.querySelector('#phoneInput');
 
 const circles = document.querySelectorAll('.circleStepCounter');
 
+const priceArray = [];
+const totalText = document.querySelector('.totalText');
+
 const avaiablePlans = [
     {
         id: "Arcade",
-        title: "Arcade", 
-        icon: "assets/images/icon-arcade.svg", 
+        title: "Arcade",
+        icon: "assets/images/icon-arcade.svg",
         price: {
             monthly: 9,
             yearly: 90
@@ -44,19 +42,19 @@ const avaiablePlans = [
     },
     {
         id: 'Advanced',
-        title: "Advanced", 
-        icon: "assets/images/icon-advanced.svg", 
+        title: "Advanced",
+        icon: "assets/images/icon-advanced.svg",
         price: {
-            monthly:12,
+            monthly: 12,
             yearly: 120
         }
     },
     {
         id: "Pro",
-        title: "Pro", 
-        icon: "assets/images/icon-pro.svg", 
+        title: "Pro",
+        icon: "assets/images/icon-pro.svg",
         price: {
-            monthly:15,
+            monthly: 15,
             yearly: 150
         }
     },
@@ -65,28 +63,28 @@ const avaiablePlans = [
 const avaiableAddons = [
     {
         id: "Online Service",
-        title:"Online Service",
+        title: "Online Service",
         description: "Access to multiplayer games",
         price: {
-            monthly:1,
+            monthly: 1,
             yearly: 10
         }
     },
     {
         id: "Larger storage",
-        title:"Larger storage",
+        title: "Larger storage",
         description: "Extra 1TB of cloud space",
         price: {
-            monthly:2,
+            monthly: 2,
             yearly: 20
         }
     },
     {
         id: "Customizable profile",
-        title:"Customizable profile",
+        title: "Customizable profile",
         description: "Custom theme on your profile",
         price: {
-            monthly:2,
+            monthly: 2,
             yearly: 20
         }
     },
@@ -96,38 +94,28 @@ const state = {
     name: '',
     email: '',
     phone: '',
-    selectedPlanId:"",
+    selectedPlanId: "",
     selectedPlanVersion: "",
     addons: []
 }
 
-nameInput.addEventListener('input', ()=>{
+nameInput.addEventListener('input', () => {
     const typedName = nameInput.value;
     state.name = typedName;
 });
 
-emailInput.addEventListener('input', ()=>{
+emailInput.addEventListener('input', () => {
     const typedEmail = emailInput.value;
     state.email = typedEmail;
 });
 
-phoneInput.addEventListener('input', ()=>{
+phoneInput.addEventListener('input', () => {
     const typedPhone = phoneInput.value;
     state.phone = typedPhone;
 });
 
 
 function createPlans() {
-    // const sectionTitle = document.createElement('h1');
-    // sectionTitle.classList.add('sectionTitle');
-    // sectionTitle.textContent = "Select your plan";
-    // stepPage2.appendChild(sectionTitle);
-
-    // const sectionInfo = document.createElement('p');
-    // sectionInfo.classList.add('sectionInfo');
-    // sectionInfo.textContent = "You have the option of monthly or yearly billing.";
-    // stepPage2.appendChild(sectionInfo);
-
     avaiablePlans.forEach(plan => {
         const item = document.createElement('div');
         item.classList.add('item');
@@ -147,13 +135,13 @@ function createPlans() {
         itemPrice.textContent = `$${plan.price.monthly}/mo`;
         item.appendChild(itemPrice);
 
-        
-            const bonus = document.createElement('div');
-            bonus.classList.add('bonus');
-            bonus.classList.add('hidden');
-            bonus.textContent = '2 months free';
-            item.appendChild(bonus);
-        
+
+        const bonus = document.createElement('div');
+        bonus.classList.add('bonus');
+        bonus.classList.add('hidden');
+        bonus.textContent = '2 months free';
+        item.appendChild(bonus);
+
 
 
         item.addEventListener('click', () => {
@@ -169,11 +157,11 @@ function createPlans() {
                     otherItem.classList.remove('selectedItem');
                 }
             });
-    
+
             // Zaznacz/Wyłącz aktualny element
             item.classList.toggle('selectedItem');
-    
-    
+
+
             //pokazuje wybrany tytul i cene z items 
             if (item.classList.contains('selectedItem')) {
                 const itemTitle = item.querySelector('.itemTitle');
@@ -190,17 +178,21 @@ function createPlans() {
         const bonuses = document.querySelectorAll('.bonus');
         state.selectedPlanVersion = toggleNameMonthly.textContent;
         toggleSwitch.addEventListener('change', () => {
-                
+
             if (toggleSwitch.checked) {
-                
+
                 toggleNameMonthly.classList.remove("toggleNameActivated");
                 toggleNameYearly.classList.add("toggleNameActivated");
                 itemPrice.textContent = `$${plan.price.yearly}/yr`;
                 bonuses.forEach(bonus => bonus.classList.remove('hidden'));
                 state.selectedPlanVersion = toggleNameYearly.textContent;
+                totalText.textContent = 'Total (per year)';
                 if (state.selectedPlanVersion === toggleNameYearly.textContent) {
-                    const itemPrice = item.querySelector('.itemPrice');
-                    selectedMainPrice.textContent = itemPrice.textContent;
+                    if (item.classList.contains('selectedItem')) {
+                        const itemPrice = item.querySelector('.itemPrice');
+                        selectedMainPrice.textContent = itemPrice.textContent;
+                    }
+
                 }
             } else {
                 toggleNameMonthly.classList.add("toggleNameActivated");
@@ -208,15 +200,18 @@ function createPlans() {
                 itemPrice.textContent = `$${plan.price.monthly}/mo`;
                 bonuses.forEach(bonus => bonus.classList.add('hidden'));
                 state.selectedPlanVersion = toggleNameMonthly.textContent;
+                totalText.textContent = 'Total (per month)';
 
                 if (state.selectedPlanVersion === toggleNameMonthly.textContent) {
-                    const itemPrice = item.querySelector('.itemPrice');
-                    selectedMainPrice.textContent = itemPrice.textContent;
+                    if (item.classList.contains('selectedItem')) {
+                        const itemPrice = item.querySelector('.itemPrice');
+                        selectedMainPrice.textContent = itemPrice.textContent;
+                    }
                 }
-            }  console.log(state);
+            } console.log(state);
         });
     })
-    
+
 }
 
 createPlans();
@@ -253,7 +248,7 @@ function createAddons() {
         barPrice.textContent = `$${addon.price.monthly}/mo`;
         barItem.appendChild(barPrice);
 
-        toggleSwitch.addEventListener('change', ()=>{
+        toggleSwitch.addEventListener('change', () => {
             if (toggleSwitch.checked) {
                 barPrice.textContent = `$${addon.price.yearly}/yr`;
             } else {
@@ -288,8 +283,11 @@ nextStepButtons.forEach(nextStepButton => {
             }
         }
         else if (currentStep === 2) {
-            currentStep++;
-            goToStep3();
+            const selectedPlanItem = itemsPlans.querySelector('.selectedItem');
+            if (selectedPlanItem) {
+                currentStep++;
+                goToStep3();
+            }
         }
         else if (currentStep === 3) {
             currentStep++;
@@ -300,6 +298,7 @@ nextStepButtons.forEach(nextStepButton => {
         }
     });
 })
+
 
 goBackButtons.forEach(goBackButton => {
     goBackButton.addEventListener('click', () => {
@@ -328,7 +327,7 @@ function goToStep1() {
 }
 
 function goToStep2() {
-    
+
     stepPage1.classList.add('hidden');
     stepPage2.classList.remove('hidden');
     stepPage3.classList.add('hidden');
@@ -364,18 +363,6 @@ function goToEndScreen() {
 }
 
 
-// function checkPage() {
-//     if (!stepPage1.classList.contains('hidden')) {
-//         return 1;
-//     }
-//     if (!stepPage2.classList.contains('hidden')) {
-//         return 2;
-//     }
-//     if (!stepPage3.classList.contains('hidden')) {
-//         return 3;
-//     }
-// }
-
 function checkInputFields() {
     let bracketsAreFilled = true;
 
@@ -397,41 +384,6 @@ function checkInputFields() {
 
 
 
-
-// step 2
-// items.forEach(item => {
-//     item.addEventListener('click', () => {
-
-//         console.log(item)
-//         const clickedItemId = item.id
-//         state.selectedPlanId = clickedItemId
-
-//         // Odznacz pozostałe elementy
-//         items.forEach(otherItem => {
-//             if (otherItem !== item) {
-//                 otherItem.classList.remove('selectedItem');
-//             }
-//         });
-
-//         // Zaznacz/Wyłącz aktualny element
-//         item.classList.toggle('selectedItem');
-
-
-//         //pokazuje wybrany tytul i cene z items 
-//         if (item.classList.contains('selectedItem')) {
-//             const itemTitle = item.querySelector('.itemTitle');
-//             const itemPrice = item.querySelector('.itemPrice');
-//             selectedPlanTitle.textContent = itemTitle.textContent;
-//             selectedMainPrice.textContent = itemPrice.textContent;
-//         } else {
-//             state.selectedPlanId = "";
-//         }
-//     });
-
-
-
-// });
-const priceArray = [];
 //step 4
 const barItems = document.querySelectorAll('.barItem');
 const summaryBox = document.querySelector('.summaryBox');
@@ -459,10 +411,25 @@ barItems.forEach(barItem => {
 
             summaryBox.appendChild(selectedAddOn);
 
-            priceArray.push(selectedAddOnPrice.textContent);
+            const addon = avaiableAddons.find(item => item.id === selectedAddOnTitle.textContent);
+            if (state.selectedPlanVersion === "Monthly") {
+                priceArray.push(addon.price.monthly)
+            } else if (state.selectedPlanVersion === "Yearly") {
+                priceArray.push(addon.price.yearly)
+            }
+
             console.log(priceArray);
-           
-        } else { // nie wiem czy to dobrze
+
+            const totalPrice = document.querySelector('.totalPrice');
+            const totalPriceValue = priceArray.reduce((accumulator, currentValue) => accumulator + currentValue);
+
+            if (state.selectedPlanVersion === "Monthly") {
+                totalPrice.textContent = `$${totalPriceValue}/mo`;
+            } else if (state.selectedPlanVersion === "Yearly") {
+                totalPrice.textContent = `$${totalPriceValue}/yr`
+            }
+
+        } else if(barItem.classList.contains('selectedItem')){ // nie wiem czy to dobrze
             const selectedAddOn = document.querySelector('.selectedAddOn');
             selectedAddOn.remove();
         }
@@ -471,15 +438,13 @@ barItems.forEach(barItem => {
 
 });
 
-const totalPrice = document.querySelector('.totalPrice');
-
 
 function summary() {
 
 }
 
 const changeButton = document.querySelector('.changeButton');
-changeButton.addEventListener('click', ()=> {
+changeButton.addEventListener('click', () => {
     goToStep2();
     currentStep = 2;
 })
