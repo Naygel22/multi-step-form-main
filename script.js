@@ -27,7 +27,7 @@ const phoneInput = document.querySelector('#phoneInput');
 
 const circles = document.querySelectorAll('.circleStepCounter');
 
-const priceArray = [];
+let priceArray = [];
 const totalText = document.querySelector('.totalText');
 
 const avaiablePlans = [
@@ -95,7 +95,7 @@ const state = {
     email: '',
     phone: '',
     selectedPlanId: "",
-    selectedPlanVersion: "",
+    selectedPlanVersion: "monthly",
     addons: []
 }
 
@@ -176,38 +176,37 @@ function createPlans() {
 
 
         const bonuses = document.querySelectorAll('.bonus');
-        state.selectedPlanVersion = toggleNameMonthly.textContent;
+        // state.selectedPlanVersion = toggleNameMonthly.textContent;
         toggleSwitch.addEventListener('change', () => {
 
             if (toggleSwitch.checked) {
+
 
                 toggleNameMonthly.classList.remove("toggleNameActivated");
                 toggleNameYearly.classList.add("toggleNameActivated");
                 itemPrice.textContent = `$${plan.price.yearly}/yr`;
                 bonuses.forEach(bonus => bonus.classList.remove('hidden'));
-                state.selectedPlanVersion = toggleNameYearly.textContent;
+                state.selectedPlanVersion = "yearly";
                 totalText.textContent = 'Total (per year)';
-                if (state.selectedPlanVersion === toggleNameYearly.textContent) {
-                    if (item.classList.contains('selectedItem')) {
-                        const itemPrice = item.querySelector('.itemPrice');
-                        selectedMainPrice.textContent = itemPrice.textContent;
-                    }
-
+                if (item.classList.contains('selectedItem')) {
+                    const itemPrice = item.querySelector('.itemPrice');
+                    selectedMainPrice.textContent = itemPrice.textContent;
                 }
+
             } else {
                 toggleNameMonthly.classList.add("toggleNameActivated");
                 toggleNameYearly.classList.remove("toggleNameActivated");
                 itemPrice.textContent = `$${plan.price.monthly}/mo`;
                 bonuses.forEach(bonus => bonus.classList.add('hidden'));
-                state.selectedPlanVersion = toggleNameMonthly.textContent;
+                state.selectedPlanVersion = "monthly";
                 totalText.textContent = 'Total (per month)';
 
-                if (state.selectedPlanVersion === toggleNameMonthly.textContent) {
-                    if (item.classList.contains('selectedItem')) {
-                        const itemPrice = item.querySelector('.itemPrice');
-                        selectedMainPrice.textContent = itemPrice.textContent;
-                    }
+
+                if (item.classList.contains('selectedItem')) {
+                    const itemPrice = item.querySelector('.itemPrice');
+                    selectedMainPrice.textContent = itemPrice.textContent;
                 }
+
             } console.log(state);
         });
     })
@@ -223,6 +222,7 @@ function createAddons() {
         const barItem = document.createElement('div');
         barItem.classList.add('barItem');
         bars.appendChild(barItem);
+        barItem.setAttribute("id", addon.id)
 
         const checkbox = document.createElement('input');
         checkbox.setAttribute("type", "checkbox");
@@ -351,6 +351,7 @@ function goToStep4() {
     stepPage3.classList.add('hidden');
     stepPage4.classList.remove('hidden');
     updateCirclesBySteps();
+    calculateTotalPrice();
 }
 
 function goToEndScreen() {
@@ -362,6 +363,18 @@ function goToEndScreen() {
     endScreen.classList.remove('hidden');
 }
 
+function getSelectedPlanVersionText() {
+    return state.selectedPlanVersion === 'monthly' ? "mo" : "yr"
+}
+
+function calculateTotalPrice() {
+    const totalPrice = document.querySelector('.totalPrice');
+    const totalPriceValue = priceArray.reduce((accumulator, currentValue) => {
+        return accumulator + currentValue.price[state.selectedPlanVersion]
+    }, 0);
+
+    totalPrice.textContent = `$${totalPriceValue}/${getSelectedPlanVersionText()}`;
+}
 
 function checkInputFields() {
     let bracketsAreFilled = true;
@@ -411,28 +424,26 @@ barItems.forEach(barItem => {
 
             summaryBox.appendChild(selectedAddOn);
 
-            const addon = avaiableAddons.find(item => item.id === selectedAddOnTitle.textContent);
-            if (state.selectedPlanVersion === "Monthly") {
-                priceArray.push(addon.price.monthly)
-            } else if (state.selectedPlanVersion === "Yearly") {
-                priceArray.push(addon.price.yearly)
-            }
+            const addon = avaiableAddons.find(item => item.id === barItem.id);
+            priceArray.push(addon);
 
-            console.log(priceArray);
 
-            const totalPrice = document.querySelector('.totalPrice');
-            const totalPriceValue = priceArray.reduce((accumulator, currentValue) => accumulator + currentValue);
 
-            if (state.selectedPlanVersion === "Monthly") {
-                totalPrice.textContent = `$${totalPriceValue}/mo`;
-            } else if (state.selectedPlanVersion === "Yearly") {
-                totalPrice.textContent = `$${totalPriceValue}/yr`
-            }
 
-        } else if(barItem.classList.contains('selectedItem')){ // nie wiem czy to dobrze
+        } else { 
             const selectedAddOn = document.querySelector('.selectedAddOn');
+            // [1,2,3].filter(item => item % 2 !== 0 ) => [1,3]
+            // [{id:1}, {id:2}, {id:3}].filter(item => {
+            console.log('Baritem id:', barItem.id);
+            console.log('Price Array:', priceArray);
+            const filteredArray = priceArray.filter(item => item.id !== barItem.id)
+            console.log("PriceArrayUpdate", filteredArray)
+            priceArray = filteredArray;
+
             selectedAddOn.remove();
         }
+        console.log(priceArray);
+
     });
 
 
