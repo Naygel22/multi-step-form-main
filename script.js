@@ -119,6 +119,7 @@ function createPlans() {
     avaiablePlans.forEach(plan => {
         const item = document.createElement('div');
         item.classList.add('item');
+        item.setAttribute("id", plan.id)
         itemsPlans.appendChild(item);
 
         const img = document.createElement('img');
@@ -145,11 +146,12 @@ function createPlans() {
 
 
         item.addEventListener('click', () => {
-            console.log(state);
-            console.log(item)
             const clickedItemId = plan.id;
-            state.selectedPlanId = clickedItemId
-            console.log(state);
+            state.selectedPlanId = clickedItemId;
+            
+            const filteredArray = priceArray.filter(selectedPlan => selectedPlan.id !== item.id)
+            priceArray = filteredArray;
+
             const items = document.querySelectorAll('.item');
             // Odznacz pozostałe elementy
             items.forEach(otherItem => {
@@ -161,6 +163,7 @@ function createPlans() {
             // Zaznacz/Wyłącz aktualny element
             item.classList.toggle('selectedItem');
 
+            
 
             //pokazuje wybrany tytul i cene z items 
             if (item.classList.contains('selectedItem')) {
@@ -168,10 +171,18 @@ function createPlans() {
                 const itemPrice = item.querySelector('.itemPrice');
                 selectedPlanTitle.textContent = itemTitle.textContent;
                 selectedMainPrice.textContent = itemPrice.textContent;
+
+                const clickedPlan = avaiablePlans.find(selectedPlan => selectedPlan.id === item.id);
+                priceArray.push(clickedPlan);
+                console.log(priceArray)
             } else {
                 state.selectedPlanId = "";
+                const filteredArray = priceArray.filter(selectedPlan => selectedPlan.id !== item.id)
+                priceArray = filteredArray;
             }
-            console.log(state);
+                
+                console.log(priceArray)
+            
         });
 
 
@@ -207,13 +218,14 @@ function createPlans() {
                     selectedMainPrice.textContent = itemPrice.textContent;
                 }
 
-            } console.log(state);
+            } 
         });
     })
 
 }
 
 createPlans();
+
 
 const bars = document.querySelector('.bars');
 
@@ -318,7 +330,6 @@ goBackButtons.forEach(goBackButton => {
 })
 
 function goToStep1() {
-    console.log(currentStep);
     stepPage1.classList.remove('hidden');
     stepPage2.classList.add('hidden');
     stepPage3.classList.add('hidden');
@@ -336,16 +347,16 @@ function goToStep2() {
 }
 
 function goToStep3() {
-    console.log(currentStep);
     stepPage1.classList.add('hidden');
     stepPage2.classList.add('hidden');
     stepPage3.classList.remove('hidden');
     stepPage4.classList.add('hidden');
     updateCirclesBySteps();
+    calculateTotalPrice();
+    console.log(priceArray);
 }
 
 function goToStep4() {
-    console.log(currentStep);
     stepPage1.classList.add('hidden');
     stepPage2.classList.add('hidden');
     stepPage3.classList.add('hidden');
@@ -355,7 +366,6 @@ function goToStep4() {
 }
 
 function goToEndScreen() {
-    console.log(currentStep);
     stepPage1.classList.add('hidden');
     stepPage2.classList.add('hidden');
     stepPage3.classList.add('hidden');
