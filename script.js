@@ -27,7 +27,6 @@ const phoneInput = document.querySelector('#phoneInput');
 
 const circles = document.querySelectorAll('.circleStepCounter');
 
-let priceArray = [];
 const totalText = document.querySelector('.totalText');
 
 const avaiablePlans = [
@@ -148,9 +147,9 @@ function createPlans() {
         item.addEventListener('click', () => {
             const clickedItemId = plan.id;
             state.selectedPlanId = clickedItemId;
-            
-            const filteredArray = priceArray.filter(selectedPlan => selectedPlan.id !== item.id)
-            priceArray = filteredArray;
+            console.log(state);
+            // const filteredArray = priceArray.filter(selectedPlan => selectedPlan.id !== item.id)
+            // priceArray = filteredArray;
 
             const items = document.querySelectorAll('.item');
             // Odznacz pozostałe elementy
@@ -172,16 +171,15 @@ function createPlans() {
                 selectedPlanTitle.textContent = itemTitle.textContent;
                 selectedMainPrice.textContent = itemPrice.textContent;
 
-                const clickedPlan = avaiablePlans.find(selectedPlan => selectedPlan.id === item.id);
-                priceArray.push(clickedPlan);
-                console.log(priceArray)
+                // const clickedPlan = avaiablePlans.find(selectedPlan => selectedPlan.id === item.id);
+                // priceArray.push(clickedPlan);
+                // console.log(priceArray)
             } else {
                 state.selectedPlanId = "";
-                const filteredArray = priceArray.filter(selectedPlan => selectedPlan.id !== item.id)
-                priceArray = filteredArray;
+                // const filteredArray = priceArray.filter(selectedPlan => selectedPlan.id !== item.id)
+                // priceArray = filteredArray;
             }
                 
-                console.log(priceArray)
             
         });
 
@@ -353,7 +351,6 @@ function goToStep3() {
     stepPage4.classList.add('hidden');
     updateCirclesBySteps();
     calculateTotalPrice();
-    console.log(priceArray);
 }
 
 function goToStep4() {
@@ -363,6 +360,7 @@ function goToStep4() {
     stepPage4.classList.remove('hidden');
     updateCirclesBySteps();
     calculateTotalPrice();
+    console.log(state)
 }
 
 function goToEndScreen() {
@@ -379,9 +377,12 @@ function getSelectedPlanVersionText() {
 
 function calculateTotalPrice() {
     const totalPrice = document.querySelector('.totalPrice');
-    const totalPriceValue = priceArray.reduce((accumulator, currentValue) => {
+
+    const clickedPlan = avaiablePlans.find(selectedPlan => selectedPlan.id === state.selectedPlanId);
+
+    const totalPriceValue = state.addons.reduce((accumulator, currentValue) => {
         return accumulator + currentValue.price[state.selectedPlanVersion]
-    }, 0);
+    }, clickedPlan.price[state.selectedPlanVersion]);
 
     totalPrice.textContent = `$${totalPriceValue}/${getSelectedPlanVersionText()}`;
 }
@@ -419,40 +420,37 @@ barItems.forEach(barItem => {
         checkbox.checked = !checkbox.checked;
 
         if (barItem.classList.contains('selectedItem')) {
+            const addon = avaiableAddons.find(item => item.id === barItem.id);
+            state.addons.push(addon);
+            console.log(addon);
             const selectedAddOn = document.createElement('div');
             selectedAddOn.classList.add('selectedAddOn');
 
             const selectedAddOnTitle = document.createElement('div');
             selectedAddOnTitle.classList.add('selectedAddOnTitle');
-            selectedAddOnTitle.textContent = barItem.querySelector('.barTitle').textContent;
+            selectedAddOnTitle.textContent = addon.id;
             selectedAddOn.appendChild(selectedAddOnTitle);
 
             const selectedAddOnPrice = document.createElement('div');
             selectedAddOnPrice.classList.add('selectedAddOnPrice');
-            selectedAddOnPrice.textContent = barItem.querySelector('.barPrice').textContent;
+            const currentAddOnPrice = addon.price[state.selectedPlanVersion];
+            selectedAddOnPrice.textContent = `$${currentAddOnPrice}/${getSelectedPlanVersionText()}`
             selectedAddOn.appendChild(selectedAddOnPrice);
 
             summaryBox.appendChild(selectedAddOn);
-
-            const addon = avaiableAddons.find(item => item.id === barItem.id);
-            priceArray.push(addon);
-
-
-
 
         } else { 
             const selectedAddOn = document.querySelector('.selectedAddOn');
             // [1,2,3].filter(item => item % 2 !== 0 ) => [1,3]
             // [{id:1}, {id:2}, {id:3}].filter(item => {
             console.log('Baritem id:', barItem.id);
-            console.log('Price Array:', priceArray);
-            const filteredArray = priceArray.filter(item => item.id !== barItem.id)
+            const filteredArray = state.addons.filter(item => item.id !== barItem.id)
             console.log("PriceArrayUpdate", filteredArray)
-            priceArray = filteredArray;
+            state.addons = filteredArray;
 
             selectedAddOn.remove();
         }
-        console.log(priceArray);
+        console.log(state.addons);
 
     });
 
