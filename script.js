@@ -147,9 +147,6 @@ function createPlans() {
         item.addEventListener('click', () => {
             const clickedItemId = plan.id;
             state.selectedPlanId = clickedItemId;
-            console.log(state);
-            // const filteredArray = priceArray.filter(selectedPlan => selectedPlan.id !== item.id)
-            // priceArray = filteredArray;
 
             const items = document.querySelectorAll('.item');
             // Odznacz pozostałe elementy
@@ -171,13 +168,9 @@ function createPlans() {
                 selectedPlanTitle.textContent = itemTitle.textContent;
                 selectedMainPrice.textContent = itemPrice.textContent;
 
-                // const clickedPlan = avaiablePlans.find(selectedPlan => selectedPlan.id === item.id);
-                // priceArray.push(clickedPlan);
-                // console.log(priceArray)
             } else {
                 state.selectedPlanId = "";
-                // const filteredArray = priceArray.filter(selectedPlan => selectedPlan.id !== item.id)
-                // priceArray = filteredArray;
+            
             }
                 
             
@@ -185,7 +178,7 @@ function createPlans() {
 
 
         const bonuses = document.querySelectorAll('.bonus');
-        // state.selectedPlanVersion = toggleNameMonthly.textContent;
+
         toggleSwitch.addEventListener('change', () => {
 
             if (toggleSwitch.checked) {
@@ -271,18 +264,6 @@ function createAddons() {
 createAddons();
 
 
-
-function getSelectedPlanInfo() {
-    const userSelectedName = state.name;
-    const userSelectedEmail = state.email;
-    const userSelectedPhone = state.phone;
-    const userSelectedPlan = state.selectedPlanId;
-    const userSelectedPlanVersion = state.selectedPlanVersion;
-
-    const plan = avaiablePlans.find(item => item.id === userSelectedPlan);
-}
-
-
 nextStepButtons.forEach(nextStepButton => {
     nextStepButton.addEventListener('click', () => {
         if (currentStep === 1) {
@@ -350,7 +331,6 @@ function goToStep3() {
     stepPage3.classList.remove('hidden');
     stepPage4.classList.add('hidden');
     updateCirclesBySteps();
-    calculateTotalPrice();
 }
 
 function goToStep4() {
@@ -360,7 +340,6 @@ function goToStep4() {
     stepPage4.classList.remove('hidden');
     updateCirclesBySteps();
     calculateTotalPrice();
-    console.log(state)
 }
 
 function goToEndScreen() {
@@ -375,6 +354,10 @@ function getSelectedPlanVersionText() {
     return state.selectedPlanVersion === 'monthly' ? "mo" : "yr"
 }
 
+const barItems = document.querySelectorAll('.barItem');
+const summaryBox = document.querySelector('.summaryBox');
+
+
 function calculateTotalPrice() {
     const totalPrice = document.querySelector('.totalPrice');
 
@@ -385,6 +368,29 @@ function calculateTotalPrice() {
     }, clickedPlan.price[state.selectedPlanVersion]);
 
     totalPrice.textContent = `$${totalPriceValue}/${getSelectedPlanVersionText()}`;
+    const summaryAddons = document.querySelector(".summaryAddons")
+
+    summaryAddons.innerHTML = ""
+
+    state.addons.forEach(addon=> {
+                const selectedAddOn = document.createElement('div');
+                selectedAddOn.classList.add('selectedAddOn');
+    
+                const selectedAddOnTitle = document.createElement('div');
+                selectedAddOnTitle.classList.add('selectedAddOnTitle');
+                selectedAddOnTitle.textContent = addon.id;
+                selectedAddOn.appendChild(selectedAddOnTitle);
+    
+                const selectedAddOnPrice = document.createElement('div');
+                selectedAddOnPrice.classList.add('selectedAddOnPrice');
+                const currentAddOnPrice = addon.price[state.selectedPlanVersion];
+
+                console.log("currentAddonPrice", currentAddOnPrice)
+
+                selectedAddOnPrice.textContent = `$${currentAddOnPrice}/${getSelectedPlanVersionText()}`
+                selectedAddOn.appendChild(selectedAddOnPrice);
+                summaryAddons.appendChild(selectedAddOn)
+    })
 }
 
 function checkInputFields() {
@@ -409,8 +415,7 @@ function checkInputFields() {
 
 
 //step 4
-const barItems = document.querySelectorAll('.barItem');
-const summaryBox = document.querySelector('.summaryBox');
+
 
 barItems.forEach(barItem => {
     const checkbox = barItem.querySelector('.checkbox');
@@ -423,44 +428,17 @@ barItems.forEach(barItem => {
             const addon = avaiableAddons.find(item => item.id === barItem.id);
             state.addons.push(addon);
             console.log(addon);
-            const selectedAddOn = document.createElement('div');
-            selectedAddOn.classList.add('selectedAddOn');
-
-            const selectedAddOnTitle = document.createElement('div');
-            selectedAddOnTitle.classList.add('selectedAddOnTitle');
-            selectedAddOnTitle.textContent = addon.id;
-            selectedAddOn.appendChild(selectedAddOnTitle);
-
-            const selectedAddOnPrice = document.createElement('div');
-            selectedAddOnPrice.classList.add('selectedAddOnPrice');
-            const currentAddOnPrice = addon.price[state.selectedPlanVersion];
-            selectedAddOnPrice.textContent = `$${currentAddOnPrice}/${getSelectedPlanVersionText()}`
-            selectedAddOn.appendChild(selectedAddOnPrice);
-
-            summaryBox.appendChild(selectedAddOn);
+            
 
         } else { 
-            const selectedAddOn = document.querySelector('.selectedAddOn');
-            // [1,2,3].filter(item => item % 2 !== 0 ) => [1,3]
-            // [{id:1}, {id:2}, {id:3}].filter(item => {
-            console.log('Baritem id:', barItem.id);
             const filteredArray = state.addons.filter(item => item.id !== barItem.id)
-            console.log("PriceArrayUpdate", filteredArray)
             state.addons = filteredArray;
 
-            selectedAddOn.remove();
         }
-        console.log(state.addons);
-
     });
-
-
 });
 
 
-function summary() {
-
-}
 
 const changeButton = document.querySelector('.changeButton');
 changeButton.addEventListener('click', () => {
